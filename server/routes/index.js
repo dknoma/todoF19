@@ -1,5 +1,6 @@
 const todosController = require('../controllers').todos;
 const todoItemsController = require('../controllers').todoItems;
+const usersController = require('../controllers').users;
 
 module.exports = (app) => {
   app.get('/api', (req, res) => res.status(200).send({
@@ -18,4 +19,8 @@ module.exports = (app) => {
   app.get('/api/todos/:todoId/items/:todoItemId', todoItemsController.retrieve);	// Get a todo item for a specified todo
   app.put('/api/todos/:todoId/items/:todoItemId', todoItemsController.update);	// Update a specified todo item
   app.delete('/api/todos/:todoId/items/:todoItemId', todoItemsController.destroy);	// delete a specified todo
+
+  /* Users */
+  app.get('/api/users/', usersController.list);
+  app.post('/api/users/signup', usersController.signup);
 };
