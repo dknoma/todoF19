@@ -12,5 +12,5 @@ module.exports = (app) => {
   app.put('/api/todos/:todoId', todosController.update);	// update the title of a todo
   app.post('/api/todos/:todoId/items', todoItemsController.create);	// Create a todo item for a specified todo
   app.get('/api/todos/:todoId/items/:todoItemId', todoItemsController.retrieve);	// Get a todo item for a specified todo
-  app.put('/api/todos/:todoId/items/:todoItemId', todoItemsController.retrieve);	// Update a specified todo
+  app.put('/api/todos/:todoId/items/:todoItemId', todoItemsController.update);	// Update a specified todo
 };

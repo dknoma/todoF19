@@ -28,7 +28,7 @@ module.exports = {
 			})
 			.catch(error => res.status(400).send(error));
 	},
-	complete(req, res) {
+	update(req, res) {
 		return TodoItem
 			.findOne({
 				where: {
@@ -43,10 +43,8 @@ module.exports = {
 					})
 				}
 				return todoItem
-					.update({
-						complete: req.body.complete,
-					})
-					.then(() => res.status(200).send(todoItem))  // Send back the updated todoItem.
+					.update(req.body, { fields: Object.keys(req.body) })
+					.then(updatedTodoItem => res.status(200).send(updatedTodoItem))  // Send back the updated todoItem.
 					.catch((error) => res.status(400).send(error));
 			})
 			.catch(error => res.status(400).send(error));
