@@ -3,6 +3,7 @@ const Todo = require('../models').Todo;
 const TodoItem = require('../models').TodoItem;
 const config = require('../config/config');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
 /* Function to generate a JWT token for the user */
 function generateToken(user) {
@@ -46,7 +47,7 @@ module.exports = {
 		return User
 			.findOrCreate({
 				where: {
-					email: req.body.email
+					email: req.body.email.trim()
 				}, 
 				defaults: {
 					firstname: req.body.firstname.trim(),
@@ -55,7 +56,7 @@ module.exports = {
 					password: req.body.password.trim(),
 				}
 			})
-			.spread((user, created) => {
+			.then(([user, created]) => {
 				//password confirmation can be done in front end
 				//if account does exists, need to try again
 				if(!created) {
@@ -64,15 +65,18 @@ module.exports = {
 						message: 'Username or email already exists. Please try again.'
 					});
 				}
-
+				console.log("LOGGING USER: ")
+				console.log(user)
 				var token = generateToken(user);
 
 				return res.status(201).send({
 					user: user,
-					token: token
+					token: token,
 				})
 			})
-			.catch(error => res.status(400).send(error));
+			.catch(error => res.status(400).send({
+				message: 'An error occurreded.'
+			}));
 	},
 	authenticate(req, res) {
 		return User

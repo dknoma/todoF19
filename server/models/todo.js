@@ -8,13 +8,13 @@ module.exports = (sequelize, DataTypes) => {
   }, {});
   Todo.associate = models => {
     // associations can be defined here
-    Todo.hasMany(models.TodoItem, {
-      foreignKey: 'todoId',
-      as: 'todoItems',
-    }),
     Todo.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
+    }),
+    Todo.hasMany(models.TodoItem, {
+      foreignKey: 'todoId',
+      as: 'todoItems',
     })
   };
   return Todo;

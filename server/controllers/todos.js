@@ -1,18 +1,28 @@
 const Todo = require('../models').Todo;
 const TodoItem = require('../models').TodoItem;
+const User = require('../models').User;
 
 module.exports = {
 	create(req, res) {
-		return Todo
-			.create({
-				title: req.body.title,
+		return User
+			.findByPk(req.params.userId)
+			.then(user => {
+				return Todo
+					.create({
+						title: req.body.title,
+						userId: req.params.userId
+					})
+					.then(todo => res.status(201).send(todo))
+					.catch(error => res.status(400).send(error));
 			})
-			.then(todo => res.status(201).send(todo))
 			.catch(error => res.status(400).send(error));
 	},
 	list(req, res) {
 		return Todo
 			.findAll({
+				where: {
+					userId: req.params.userId
+				},
 				include: [
 					{
 						model: TodoItem,
@@ -25,7 +35,11 @@ module.exports = {
 	},
 	retrieve(req, res) {
 		return Todo
-			.findByPk(req.params.todoId, {
+			.findOne({
+				where: {
+					todoId: req.params.todoId,
+					userId: req.params.userId
+				},
 				include: [
 					{
 						model: TodoItem,
@@ -45,7 +59,11 @@ module.exports = {
 	},
 	update(req, res) {
 		return Todo
-			.findByPk(req.params.todoId, {
+			.findOne({
+				where: {
+					todoId: req.params.todoId,
+					userId: req.params.userId
+				},
 				include: [{
 					model: TodoItem,
 					as: 'todoItems',
@@ -68,7 +86,12 @@ module.exports = {
 	},
 	destroy(req, res) {
 		return Todo
-			.findByPk(req.params.todoId)
+			.findOne({
+				where: {
+					todoId: req.params.todoId,
+					userId: req.params.userId
+				}
+			})
 			.then(todo => {
 				if(!todo) {
 					return res.status(404).send({

@@ -1,3 +1,4 @@
+const bcrypt = require('bcrypt');
 const saltRounds = 10;
 
 'use strict';
@@ -37,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
   User.associate = function(models) {
     // associations can be defined here
     User.hasMany(models.Todo, {
-      foreignKey: 'todoId',
+      foreignKey: 'userId',     // foreignKey is this models key
       as: 'todos'
     })
   };
