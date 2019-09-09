@@ -11,11 +11,11 @@ module.exports = (sequelize, DataTypes) => {
     Todo.belongsTo(models.User, {
       foreignKey: 'userId',
       onDelete: 'CASCADE'
-    }),
+    });
     Todo.hasMany(models.TodoItem, {
       foreignKey: 'todoId',
       as: 'todoItems',
-    })
+    });
   };
   return Todo;
 };
