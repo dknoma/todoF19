@@ -4,6 +4,8 @@ import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-d
 // Routes
 import Home from '../components/home'
 import Signup from '../components/signup'
+import Todo from '../components/todo'
+import TodoItem from '../components/todo/todoitem'
 import BadRequest from '../components/badrequest'
 
 
@@ -18,6 +20,8 @@ class AppRouter extends Component {
 				<Redirect from="/home" to="" />
 				<Route exact path={'/'} component={Home} /* Home route *//>
 				<Route exact path={'/signup'} component={Signup} /* Signup route *//>
+				<Route exact path={'/users/:userId/todos'} component={Todo} /* Todo route *//>
+				<Route exact path={'/users/:userId/todos/:todoId'} component={TodoItem} /* Todoitem route *//>
 				<Route path="*" component={BadRequest} />
 			</Switch>
         </div>

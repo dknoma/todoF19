@@ -25,8 +25,11 @@ export class Signup extends Component {
 	}
 	
 	render() {
-        const { firstname, lastname, email, password, confirmPassword, firstnameValid, lastnameValid, emailValid, passwordValid } = this.state;
-        const isEnabled = emailValid && firstnameValid && lastnameValid && passwordValid && this.state.password === this.state.confirmPassword; // Disable submit button if form not valid
+		const { firstname, lastname, email, password, confirmPassword, firstnameValid, lastnameValid, emailValid, passwordValid } 
+		= this.state;
+		const isEnabled = emailValid && 
+			  firstnameValid && lastnameValid && 
+			  passwordValid && this.state.password === this.state.confirmPassword; // Disable submit button if form not valid
         
         return (
             <div>
@@ -82,6 +85,7 @@ export class Signup extends Component {
                     />
                     </div>
                     <br />
+					{ signup => <button disabled={!isEnabled} onClick={signup}>Submit</button> }
                     {this.state.errorMessage}
                 </div></center>
             </div>
