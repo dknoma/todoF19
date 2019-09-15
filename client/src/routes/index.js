@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch, Redirect } from 'react-router-dom'
 
 // Routes
 import Home from '../components/home'
+import Signup from '../components/signup'
 import BadRequest from '../components/badrequest'
 
 
@@ -14,7 +15,9 @@ class AppRouter extends Component {
     return (
         <div>
 			<Switch>
+				<Redirect from="/home" to="" />
 				<Route exact path={'/'} component={Home} /* Home route *//>
+				<Route exact path={'/signup'} component={Signup} /* Signup route *//>
 				<Route path="*" component={BadRequest} />
 			</Switch>
         </div>
