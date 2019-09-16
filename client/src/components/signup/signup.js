@@ -43,8 +43,8 @@ export class Signup extends Component {
 		});
 		const body = await response.json();
 	
-		if (response.status !== 201) {
-		  throw Error(body.message) 
+		if (response.status !== 200 && response.status !== 201) {
+			throw Error(body.message) 
 		}
 		return body;
 	}

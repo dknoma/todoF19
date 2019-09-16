@@ -10,24 +10,6 @@ class Home extends Component {
         userId: 0,
       }
   }
-  
-  // componentDidMount() {
-  //   // Call our fetch function below once the component mounts
-  //   this.callBackendAPI()
-  //       .then(res => this.setState({ data: res.express }))
-  //       .catch(err => console.log(err));
-  // }
-
-  // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
-  callBackendAPI = async () => {
-    const response = await fetch('/');
-    const body = await response.json();
-
-    if (response.status !== 200) {
-      throw Error(body.message) 
-    }
-    return body;
-  };
 
   render() {
     // const { userId } = this.props.params;
@@ -42,7 +24,7 @@ class Home extends Component {
 					[Sign Up]
 				</Link>
         <br />
-        <input
+        User ID: <input
             value={userId}
             onChange={e => {
                 this.setState({ userId: e.target.value })
@@ -53,16 +35,6 @@ class Home extends Component {
         <Link style={{ margin: `10px`, textDecoration: "none", color: "black" }} to={`/users/${userId}/todos`}>
 					[Create Todo List]
 				</Link>
-        <br />
-        { <button onClick={() =>
-                  this.callBackendAPI()
-                      .then(res => {
-                        this.setState({ data: res.express })
-                      })
-                      .catch(err => console.log(err))
-        }>GET</button> }
-    
-        <p className="App-intro">data: [{this.state.data}]</p>
       </div>
     )
   }

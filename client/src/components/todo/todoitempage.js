@@ -1,16 +1,60 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
 
-export class TodoItem extends Component {
+export class TodoItemPage extends Component {
 	constructor(props) {
 		super(props)
 		
 		this.state = {
 			userId: this.props.match.params.userId,
 			todoId: this.props.match.params.todoId,
-			todoItemId: 0,
+			todoItemId: this.props.match.params.todoItemId,
+			title: '',
 			content: '',
+			displayContent: '',
 		}
+	}
+
+	componentDidMount() {
+		// Call our fetch function below once the component mounts
+		this.getTodo()
+			.then(res => {
+				console.log("res: " + res.title)
+				this.setState({ title: res.title })
+			})
+			.catch(err => console.log(err));
+		this.getTodoItem()
+			.then(res => {
+				console.log("res: " + res.content)
+				this.setState({ displayContent: res.content })
+			})
+			.catch(err => console.log(err));
+	}
+
+	getTodo = async () => {
+		const { userId, todoId } = this.state;
+		const response = await fetch(`/users/${userId}/todos/${todoId}`);
+		const body = await response.json();
+		console.log("getTodo: " + body.title)
+		console.log("response.status: " + response.status)
+	
+		if (response.status !== 201 && response.status !== 200) {
+		  throw Error(body.message) 
+		}
+		return body;
+	}
+
+	getTodoItem = async () => {
+		const { userId, todoId, todoItemId } = this.state;
+		const response = await fetch(`/users/${userId}/todos/${todoId}/items/${todoItemId}`);
+		const body = await response.json();
+		console.log("getTodoItem: " + body.content)
+		console.log("response.status: " + response.status)
+	
+		if (response.status !== 201 && response.status !== 200) {
+		  throw Error(body.message) 
+		}
+		return body;
 	}
 
 	createTodoItem = async () => {
@@ -28,14 +72,14 @@ export class TodoItem extends Component {
 		});
 		const body = await response.json();
 	
-		if (response.status !== 200 && response.status !== 201) {
+		if (response.status !== 200 || response.status !== 201) {
 		  throw Error(body.message) 
 		}
 		return body;
 	};
 	
 	updateTodoItem = async () => {
-		const { userId, todoId, todoItemId} = this.state;
+		const { userId, todoId, todoItemId } = this.state;
 		// console.log("userId: " + userId);
 		const response = await fetch(`/users/${userId}/todos/${todoId}/items/${todoItemId}`, {
 			method: 'PUT',
@@ -49,14 +93,14 @@ export class TodoItem extends Component {
 		});
 		const body = await response.json();
 	
-		if (response.status !== 200 && response.status !== 201) {
+		if (response.status !== 200 || response.status !== 201) {
 		  throw Error(body.message) 
 		}
 		return body;
 	};
 
 	render() {
-		const { userId, todoId, todoItemId } = this.state;
+		const { userId, todoId, todoItemId, title, displayContent } = this.state;
 		var { content } = this.state;
 		return (
 			<div>
@@ -68,32 +112,9 @@ export class TodoItem extends Component {
 				<br />
 				TODO ID: {todoId}
 				<br />
-				Content of TODO: <input
-					value={content}
-					onChange={e => {
-						this.setState({ content: e.target.value })
-					}}
-					type="text"
-					placeholder="content"
-				/>
+				TODO: {title}
 				<br />
-				<button onClick={() => 
-                  this.createTodoItem()
-                      .then(res => {
-                        // this.setState({ title: res.express })
-						console.log("res: " + res)
-                      })
-					  .catch(err => console.log(err))
-				}>Create TODO item</button>
-				<br />
-				TODO Item ID: <input
-					value={todoItemId}
-					onChange={e => {
-						this.setState({ todoItemId: e.target.value })
-					}}
-					type="text"
-					placeholder="todoItemId"
-				/>
+				Content : {displayContent}
 				<br />
 				Updated content: <input
 					value={content}
@@ -118,4 +139,4 @@ export class TodoItem extends Component {
 		)
 	}
 } 
-export default TodoItem;
+export default TodoItemPage;

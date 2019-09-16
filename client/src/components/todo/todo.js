@@ -12,10 +12,10 @@ export class Todo extends Component {
 		}
 	}
 
-	callBackendAPI = async () => {
-		const userId = this.state.userId;
+	createTodo = async () => {
+		const { userId } = this.state;
 		// console.log("userId: " + userId);
-		const response = await fetch(`/users/${userId}/todos/`, {
+		const response = await fetch(`/users/${userId}/todos`, {
 			method: 'POST',
 			headers: {
 				'Accept': 'application/json',
@@ -26,17 +26,16 @@ export class Todo extends Component {
 			})
 		});
 		const body = await response.json();
-		console.log("message: " + body.message);
 	
-		if (response.status !== 200) {
-		  throw Error(body.message) 
+		if (response.status !== 200 || response.status !== 201) {
+			throw Error(body.message) 
 		}
 		return body;
 	};
 
 	render() {
 		// const userId = parseInt(this.props.match.params.userId);
-		var { title, todoId } = this.state;
+		var { userId, title, todoId } = this.state;
 		return (
 			<div>
 				<Link style={{ margin: `10px`, textDecoration: "none", color: "black" }} to="/home">
@@ -44,15 +43,6 @@ export class Todo extends Component {
 				</Link>
 				<br />
 				Welcome user {this.state.userId}!
-				<br />
-				<input
-					value={todoId}
-					onChange={e => {
-						this.setState({ todoId: e.target.value })
-					}}
-					type="text"
-					placeholder="TODO ID."
-				/>
 				<br />
 				<input
 					value={title}
@@ -64,14 +54,29 @@ export class Todo extends Component {
 				/>
 				<br />
 				<button onClick={() => 
-                  this.callBackendAPI()
+                  this.createTodo()
                       .then(res => {
-                        this.setState({ title: res.express })
+                        // this.setState({ title: res.express })
+						console.log("res: " + res)
                       })
 					  .catch(err => console.log(err))
 				}>Create Todo List</button>
 				<br />
-				{/* <Link style={{ margin: `10px`, textDecoration: "none", color: "black" }} to={`/users/${userId}/todos/`}>
+				<center>
+					TODO ID: <input
+						value={todoId}
+						onChange={e => {
+							this.setState({ todoId: e.target.value })
+						}}
+						type="text"
+						placeholder="TODO ID."
+					/>
+				</center>
+				<Link style={{ margin: `10px`, textDecoration: "none", color: "black" }} to={`/users/${userId}/todos/${todoId}`}>
+					[Create TODO Item]
+				</Link>
+				{/* 
+				<Link style={{ margin: `10px`, textDecoration: "none", color: "black" }} to={`/users/${userId}/todos/`}>
 					[Create Todo List]
 				</Link>
 				<br />

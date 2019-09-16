@@ -6,6 +6,8 @@ import Home from '../components/home'
 import Signup from '../components/signup'
 import Todo from '../components/todo'
 import TodoItem from '../components/todo/todoitem'
+import TodoItemPage from '../components/todo/todoitempage'
+import TodoItemsPage from '../components/todo/todoitemspage'
 import BadRequest from '../components/badrequest'
 
 
@@ -22,6 +24,8 @@ class AppRouter extends Component {
 				<Route exact path={'/signup'} component={Signup} /* Signup route *//>
 				<Route exact path={'/users/:userId/todos'} component={Todo} /* Todo route *//>
 				<Route exact path={'/users/:userId/todos/:todoId'} component={TodoItem} /* Todoitem route *//>
+				<Route exact path={'/users/:userId/todos/:todoId/items/:todoItemId'} component={TodoItemPage} /* TodoItemPage route *//>
+				<Route exact path={'/users/:userId/todos/:todoId/items'} component={TodoItemsPage} /* TodoItemsPage route *//>
 				<Route path="*" component={BadRequest} />
 			</Switch>
         </div>
