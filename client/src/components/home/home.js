@@ -5,14 +5,33 @@ class Home extends Component {
   constructor(props) {
       super(props)
       
-        this.state = {
+      this.state = {
+        data: 'data',
+        userId: 0,
       }
   }
+  
+  // componentDidMount() {
+  //   // Call our fetch function below once the component mounts
+  //   this.callBackendAPI()
+  //       .then(res => this.setState({ data: res.express }))
+  //       .catch(err => console.log(err));
+  // }
+
+  // Fetches our GET route from the Express server. (Note the route we are fetching matches the GET route from server.js
+  callBackendAPI = async () => {
+    const response = await fetch('/');
+    const body = await response.json();
+
+    if (response.status !== 200) {
+      throw Error(body.message) 
+    }
+    return body;
+  };
+
   render() {
     // const { userId } = this.props.params;
     var { userId, todoId } = this.state;
-    userId = 0;
-    todoId = 0;
     return (
       <div>
         <Link style={{ margin: `10px`, textDecoration: "none", color: "black" }} to="/home">
@@ -35,17 +54,15 @@ class Home extends Component {
 					[Create Todo List]
 				</Link>
         <br />
-        <input
-            value={todoId}
-            onChange={e => {
-                this.setState({ todoId: e.target.value })
-            }}
-            type="text"
-            placeholder="TODO ID."
-        /><br />
-        <Link style={{ margin: `10px`, textDecoration: "none", color: "black" }} to={`/users/${userId}/todos/${todoId}`}>
-					[Create Todo Item]
-				</Link>
+        { <button onClick={() =>
+                  this.callBackendAPI()
+                      .then(res => {
+                        this.setState({ data: res.express })
+                      })
+                      .catch(err => console.log(err))
+        }>GET</button> }
+    
+        <p className="App-intro">data: [{this.state.data}]</p>
       </div>
     )
   }

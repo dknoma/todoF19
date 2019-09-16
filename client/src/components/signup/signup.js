@@ -23,6 +23,31 @@ export class Signup extends Component {
             errorMessage: '',
         }
 	}
+
+	signup = async () => {
+		console.log("SIGNUP")
+		const { firstname, lastname, email, password } = this.state;
+		console.log("Creating user for " + email);
+		const response = await fetch(`/users/signup`, {
+			method: 'POST',
+			headers: {
+				'Accept': 'application/json',
+				'Content-Type': 'application/json',
+			},
+			body: JSON.stringify({
+				firstname: firstname,
+				lastname: lastname,
+				email: email,
+				password: password
+			})
+		});
+		const body = await response.json();
+	
+		if (response.status !== 201) {
+		  throw Error(body.message) 
+		}
+		return body;
+	}
 	
 	render() {
 		const { firstname, lastname, email, password, confirmPassword, firstnameValid, lastnameValid, emailValid, passwordValid } 
@@ -85,8 +110,12 @@ export class Signup extends Component {
                     />
                     </div>
                     <br />
-					{ signup => <button disabled={!isEnabled} onClick={signup}>Submit</button> }
-                    {this.state.errorMessage}
+					<button onClick={() => 
+						this.signup()
+						.then(res => {
+							console.log("res: " + res)
+						})
+						.catch(err => console.log(err))}>Submit</button> 
                 </div></center>
             </div>
         )

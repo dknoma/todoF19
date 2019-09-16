@@ -13,7 +13,10 @@ module.exports = {
 						userId: req.params.userId
 					})
 					.then(todo => res.status(201).send(todo))
-					.catch(error => res.status(400).send(error));
+					.catch(error => {
+						console.log("ERROR");
+						res.status(400).send(error)
+					});
 			})
 			.catch(error => res.status(400).send(error));
 	},

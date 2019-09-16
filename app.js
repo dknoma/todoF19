@@ -19,7 +19,7 @@ app.set('superSecret', config.secret);
 require('./server/routes')(app);
 // catch-all route where other paths get routed to that are not specified
 app.get('*', (req, res) => res.status(200).send({
-	message: 'HELLO THERE',
+	message: '{ message: "HELLO THERE" }',
 }));
 
 module.exports = app;
